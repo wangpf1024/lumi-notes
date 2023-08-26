@@ -5,8 +5,9 @@
 
 > 软件包版本应保持一致
 
+###  Elasticsearch
 
-###  Elastic
+#### 启动集群
 
 ```shell
 ./bin/elasticsearch -E node.name=node0 -E cluster.name=geektime -E path.data=node0_data -d
@@ -15,9 +16,8 @@
 ./bin/elasticsearch -E node.name=node3 -E cluster.name=geektime -E path.data=node3_data -d
 ```
 
-###  验证集群
-
 #### 更新秘密
+
 ```shell
 bin/elasticsearch-reset-password -u elastic
 ```
@@ -29,6 +29,7 @@ curl --cacert ./config/certs/http_ca.crt -u elastic https://localhost:9200
 ```
 
 #### 输出结果
+
 ```json
 {
   "name" : "node0",
@@ -55,7 +56,7 @@ curl --cacert ./config/certs/http_ca.crt -u elastic https://localhost:9200
 ./elasticsearch-8.7.1/bin/elasticsearch-plugin install analysis-icu
 ```
 
-###  kibana
+###  Kibana
 
 #### 启动
 
@@ -65,13 +66,9 @@ curl --cacert ./config/certs/http_ca.crt -u elastic https://localhost:9200
 
 #### 配置kibana用户
 
-```json
-## error msg with kibana_system
-You do not have permission to access the requested page
-## 
-The [kibana_system](https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html) is a built-in role used to connect to Elasticsearch. It's not intended as a login to Kibana. I would login to Kibana using the elastic account and then create a new user and then use that one.
-```
-
+> error msg with kibana_system 。
+> You do not have permission to access the requested page 。
+> The [kibana_system](https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html) is a built-in role used to connect to Elasticsearch. It's not intended as a login to Kibana. I would login to Kibana using the **elastic** account and then create a new user and then use that one。
 
 ###  Logstash
 
