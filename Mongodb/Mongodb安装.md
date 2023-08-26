@@ -4,7 +4,7 @@
 
 虚拟机配置：172.27.2.63/38/48
 
-## 1.初始软件环境
+## 初始软件环境
 
 参考文档 https://docs.mongodb.com/manual/tutorial/deploy-shard-cluster/
 
@@ -32,7 +32,7 @@ yum install -y mongodb-org
 cat /etc/mongod.conf
 ```
 
-## 2.创建配置文件
+## 创建配置文件
 
 **以上机器分别配置**
 
@@ -262,7 +262,7 @@ net:
 /usr/bin/mongod -f /opt/soft/mongodb_sharding_config/01/shared.conf --shutdown
 ```
 
-## 4.构建集群 
+## 构建集群 
 
 **以上机器分别执行**
 
@@ -318,7 +318,7 @@ sh.addShard( "rep1/172.27.2.38:27018,172.27.2.48:27018,172.27.2.63:27018")
 sh.addShard( "rep2/172.27.2.38:27017,172.27.2.48:27017,172.27.2.63:27017")
 ```
 
-## 5.数据备份与恢复
+## 数据备份与恢复
 
 ```shell
 /usr/bin/mongodump --host=192.168.100.118 --port=27017 --db=dxLogDB --out=/opt/data/

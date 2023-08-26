@@ -2,7 +2,7 @@
 
 下载地址：http://kafka.apache.org/downloads
 
-## 1.配置更新
+## 配置更新
 
 ```shell
 # 解压安装包接口
@@ -14,7 +14,7 @@ zookeeper.connect=172.27.2.38:2181,172.27.2.48:2181,172.27.2.63:2181
 zookeeper.connection.timeout.ms=180000
 ```
 
-## 2.启动broker
+## 启动broker
 
 ```shell
 # 启动
@@ -27,7 +27,7 @@ zookeeper.connection.timeout.ms=180000
 >
 > To help the producer do this all Kafka nodes can answer a request for metadata about which servers are alive and where the leaders for the partitions of a topic are at any given time to allow the producer to appropriately direct its requests.
 
-## 3.创建topic
+## 创建topic
 
 ```shell
 # 创建topic replication  需要于 <= broker size (节点数量)

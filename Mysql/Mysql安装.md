@@ -10,7 +10,7 @@
 
 安装参考文档：https://dev.mysql.com/doc/refman/8.0/en/linux-installation-rpm.html
 
-## 1.安装
+## 安装
 
 ```shell
 # Common files for server and client libraries
@@ -46,14 +46,14 @@ rpm -Uvh mysql-community-client-5.7.27-1.el7.x86_64.rpm
 mysql-community-server-5.7.27-1.el7.x86_64.rpm
 ```
 
-## 2.启动数据库
+## 启动数据库
 
 ```shell
 # 启动数据库
 systemctl start mysqld
 ```
 
-## 3.权限修改
+## 权限修改
 
 ```shell
 # 查看临时密码
@@ -77,7 +77,7 @@ set global validate_password_length=6;
 set global validate_password_policy=LOW; 
 ```
 
-## 4.创建用户
+## 创建用户
 
 ```shell
 # 创建测试用户
