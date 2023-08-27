@@ -11,6 +11,8 @@
 ##  ELK
 
 1. ELK 集群安装   [read more](https://github.com/wangpf1024/lumi-notes/blob/main/ELK/ELK%E5%AE%89%E8%A3%85.md)
+2. Elastic-API   [read more](https://github.com/wangpf1024/lumi-notes/blob/main/ELK/Elastic-API.md)
+3. 
 
 ## Mysql
 
