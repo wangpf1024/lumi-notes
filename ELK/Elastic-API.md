@@ -363,6 +363,99 @@ POST kibana_sample_data_ecommerce/_search
 	}
 }
 
+#基本查询
+GET /movies/_search?q=2012&df=title&sort=year:desc&from=0&size=10&timeout=1s
+
+#带profile
+GET /movies/_search?q=2012&df=title
+{
+	"profile":"true"
+}
+
+
+#泛查询，正对_all,所有字段
+GET /movies/_search?q=2012
+{
+	"profile":"true"
+}
+
+#指定字段
+GET /movies/_search?q=title:2012&sort=year:desc&from=0&size=10&timeout=1s
+{
+	"profile":"true"
+}
+
+
+# 查找美丽心灵, Mind为泛查询
+GET /movies/_search?q=title:Beautiful Mind
+{
+	"profile":"true"
+}
+
+# 泛查询
+GET /movies/_search?q=title:2012
+{
+	"profile":"true"
+}
+
+#使用引号，Phrase查询
+GET /movies/_search?q=title:"Beautiful Mind"
+{
+	"profile":"true"
+}
+
+#分组，Bool查询
+GET /movies/_search?q=title:(Beautiful Mind)
+{
+	"profile":"true"
+}
+
+
+#布尔操作符
+# 查找美丽心灵
+GET /movies/_search?q=title:(Beautiful AND Mind)
+{
+	"profile":"true"
+}
+
+# 查找美丽心灵
+GET /movies/_search?q=title:(Beautiful NOT Mind)
+{
+	"profile":"true"
+}
+
+# 查找美丽心灵
+GET /movies/_search?q=title:(Beautiful %2BMind)
+{
+	"profile":"true"
+}
+
+
+#范围查询 ,区间写法
+GET /movies/_search?q=title:beautiful AND year:[2002 TO 2018%7D
+{
+	"profile":"true"
+}
+
+
+#通配符查询
+GET /movies/_search?q=title:b*
+{
+	"profile":"true"
+}
+
+//模糊匹配&近似度匹配
+GET /movies/_search?q=title:beautifl~1
+{
+	"profile":"true"
+}
+
+GET /movies/_search?q=title:"Lord Rings"~2
+{
+	"profile":"true"
+}
+
+
 #### 相关阅读
 
 - https://www.elastic.co/guide/en/elasticsearch/reference/7.1/search-search.html
@@ -371,4 +464,221 @@ POST kibana_sample_data_ecommerce/_search
 - https://www.entrepreneur.com/article/176398
 - https://www.searchtechnologies.com/meaning-of-relevancy
 -https://baike.baidu.com/item/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E5%8F%91%E5%B1%95%E5%8F%B2/2422574
+
+- https://www.elastic.co/guide/en/elasticsearch/reference/7.0/search-uri-request.html
+- https://www.elastic.co/guide/en/elasticsearch/reference/7.0/search-search.html
+```
+
+### Request Body 与 Query DSL
+
+```html
+#ignore_unavailable=true，可以忽略尝试访问不存在的索引“404_idx”导致的报错
+#查询movies分页
+POST /movies,404_idx/_search?ignore_unavailable=true
+{
+  "profile": true,
+	"query": {
+		"match_all": {}
+	}
+}
+
+POST /kibana_sample_data_ecommerce/_search
+{
+  "from":10,
+  "size":20,
+  "query":{
+    "match_all": {}
+  }
+}
+
+
+#对日期排序
+POST kibana_sample_data_ecommerce/_search
+{
+  "sort":[{"order_date":"desc"}],
+  "query":{
+    "match_all": {}
+  }
+
+}
+
+#source filtering
+POST kibana_sample_data_ecommerce/_search
+{
+  "_source":["order_date"],
+  "query":{
+    "match_all": {}
+  }
+}
+
+
+#脚本字段
+GET kibana_sample_data_ecommerce/_search
+{
+  "script_fields": {
+    "new_field": {
+      "script": {
+        "lang": "painless",
+        "source": "doc['order_date'].value+'hello'"
+      }
+    }
+  },
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+POST movies/_search
+{
+  "query": {
+    "match": {
+      "title": "last christmas"
+    }
+  }
+}
+
+POST movies/_search
+{
+  "query": {
+    "match": {
+      "title": {
+        "query": "last christmas",
+        "operator": "and"
+      }
+    }
+  }
+}
+
+POST movies/_search
+{
+  "query": {
+    "match_phrase": {
+      "title":{
+        "query": "one love"
+
+      }
+    }
+  }
+}
+
+POST movies/_search
+{
+  "query": {
+    "match_phrase": {
+      "title":{
+        "query": "one love",
+        "slop": 1
+
+      }
+    }
+  }
+}
+
+#### 相关阅读
+- https://www.elastic.co/guide/en/elasticsearch/reference/7.0/search-uri-request.html
+- https://www.elastic.co/guide/en/elasticsearch/reference/7.0/search-search.html
+```
+
+### Query & Simple Query String Query
+
+```html
+PUT /users/_doc/1
+{
+  "name":"Ruan Yiming",
+  "about":"java, golang, node, swift, elasticsearch"
+}
+
+PUT /users/_doc/2
+{
+  "name":"Li Yiming",
+  "about":"Hadoop"
+}
+
+
+POST users/_search
+{
+  "query": {
+    "query_string": {
+      "default_field": "name",
+      "query": "Ruan AND Yiming"
+    }
+  }
+}
+
+
+POST users/_search
+{
+  "query": {
+    "query_string": {
+      "fields":["name","about"],
+      "query": "(Ruan AND Yiming) OR (Java AND Elasticsearch)"
+    }
+  }
+}
+
+
+#Simple Query 默认的operator是 Or
+POST users/_search
+{
+  "query": {
+    "simple_query_string": {
+      "query": "Ruan AND Yiming",
+      "fields": ["name"]
+    }
+  }
+}
+
+
+POST users/_search
+{
+  "query": {
+    "simple_query_string": {
+      "query": "Ruan Yiming",
+      "fields": ["name"],
+      "default_operator": "AND"
+    }
+  }
+}
+
+
+GET /movies/_search
+{
+	"profile": true,
+	"query":{
+		"query_string":{
+			"default_field": "title",
+			"query": "Beafiful AND Mind"
+		}
+	}
+}
+
+
+# 多fields
+GET /movies/_search
+{
+	"profile": true,
+	"query":{
+		"query_string":{
+			"fields":[
+				"title",
+				"year"
+			],
+			"query": "2012"
+		}
+	}
+}
+
+
+
+GET /movies/_search
+{
+	"profile":true,
+	"query":{
+		"simple_query_string":{
+			"query":"Beautiful +mind",
+			"fields":["title"]
+		}
+	}
+}
 ```
