@@ -4,9 +4,9 @@
 
 ##  NoSql
 
-1. Redis 集群安装   [read more](https://github.com/wangpf1024/lumi-notes/blob/main/Redis/Redis%E5%AE%89%E8%A3%85.md)
-2. Redis 集群下的数据迁移  [read more](https://github.com/wangpf1024/lumi-notes/blob/main/Redis/RedisCluster%E5%A4%A7%E6%B5%B7%E6%8D%9E%E9%92%88%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB.md)
-3. Mongondb 安装  [read more](https://github.com/wangpf1024/lumi-notes/blob/main/Mongodb/Mongodb%E5%AE%89%E8%A3%85.md)
+1. Redis 集群安装   [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/Redis/Redis%E5%AE%89%E8%A3%85.md)
+2. Redis 集群下的数据迁移  [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/Redis/RedisCluster%E5%A4%A7%E6%B5%B7%E6%8D%9E%E9%92%88%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB.md)
+3. Mongondb 安装  [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/Mongodb/Mongodb%E5%AE%89%E8%A3%85.md)
 
 ##  ELK
 
@@ -18,11 +18,11 @@
 
 ## Mysql
 
-1. Mysql 安装 [read more](https://github.com/wangpf1024/lumi-notes/blob/main/Mysql/Mysql%E5%AE%89%E8%A3%85.md)
+1. Mysql 安装 [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/Mysql/Mysql%E5%AE%89%E8%A3%85.md)
 
 ##  消息中间件
 
-1. Kafka 安装 [read more](https://github.com/wangpf1024/lumi-notes/blob/main/Kafka/Kafka%E5%AE%89%E8%A3%85.md)
+1. Kafka 安装 [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/Kafka/Kafka%E5%AE%89%E8%A3%85.md)
 
 
 
