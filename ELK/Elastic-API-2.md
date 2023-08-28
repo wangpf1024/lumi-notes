@@ -1735,10 +1735,318 @@ GET /users,cluster1:users,cluster2:users/_search
 - 在Kibana中使用Cross data search https://kelonsoftware.com/cross-cluster-search-kibana/
 ```
 
-###  
+###  剖析分布式查询及相关性评分
 
 ```html
 
+DELETE message
+PUT message
+{
+  "settings": {
+    "number_of_shards": 20
+  }
+}
+
+GET message
+
+POST message/_doc?routing=1
+{
+  "content":"good"
+}
+
+POST message/_doc?routing=2
+{
+  "content":"good morning"
+}
+
+POST message/_doc?routing=3
+{
+  "content":"good morning everyone"
+}
+
+POST message/_search
+{
+  "explain": true,
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+POST message/_search
+{
+  "explain": true,
+  "query": {
+    "term": {
+      "content": {
+        "value": "good"
+      }
+    }
+  }
+}
+
+
+POST message/_search?search_type=dfs_query_then_fetch
+{
+
+  "query": {
+    "term": {
+      "content": {
+        "value": "good"
+      }
+    }
+  }
+}
+
 #### 相关阅读
 
+```
+
+###  排序及Doc Values & Fielddata
+
+```html
+#单字段排序
+POST /kibana_sample_data_ecommerce/_search
+{
+  "size": 5,
+  "query": {
+    "match_all": {
+
+    }
+  },
+  "sort": [
+    {"order_date": {"order": "desc"}}
+  ]
+}
+
+#多字段排序
+POST /kibana_sample_data_ecommerce/_search
+{
+  "size": 5,
+  "query": {
+    "match_all": {
+
+    }
+  },
+  "sort": [
+    {"order_date": {"order": "desc"}},
+    {"_doc":{"order": "asc"}},
+    {"_score":{ "order": "desc"}}
+  ]
+}
+
+GET kibana_sample_data_ecommerce/_mapping
+
+#对 text 字段进行排序。默认会报错，需打开fielddata
+POST /kibana_sample_data_ecommerce/_search
+{
+  "size": 5,
+  "query": {
+    "match_all": {
+
+    }
+  },
+  "sort": [
+    {"customer_full_name": {"order": "desc"}}
+  ]
+}
+
+#打开 text的 fielddata
+PUT kibana_sample_data_ecommerce/_mapping
+{
+  "properties": {
+    "customer_full_name" : {
+          "type" : "text",
+          "fielddata": true,
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        }
+  }
+}
+
+#关闭 keyword的 doc values
+PUT test_keyword
+PUT test_keyword/_mapping
+{
+  "properties": {
+    "user_name":{
+      "type": "keyword",
+      "doc_values":false
+    }
+  }
+}
+
+DELETE test_keyword
+
+PUT test_text
+PUT test_text/_mapping
+{
+  "properties": {
+    "intro":{
+      "type": "text",
+      "doc_values":true
+    }
+  }
+}
+
+DELETE test_text
+
+
+DELETE temp_users
+PUT temp_users
+PUT temp_users/_mapping
+{
+  "properties": {
+    "name":{"type": "text","fielddata": true},
+    "desc":{"type": "text","fielddata": true}
+  }
+}
+
+Post temp_users/_doc
+{"name":"Jack","desc":"Jack is a good boy!","age":10}
+
+#打开fielddata 后，查看 docvalue_fields数据
+POST  temp_users/_search
+{
+  "docvalue_fields": [
+    "name","desc"
+    ]
+}
+
+#查看整型字段的docvalues
+POST  temp_users/_search
+{
+  "docvalue_fields": [
+    "age"
+    ]
+}
+```
+
+###  分页与遍历 - From, Size, Search_after & Scroll API
+
+```html
+POST tmdb/_search
+{
+  "from": 10000,
+  "size": 1,
+  "query": {
+    "match_all": {
+
+    }
+  }
+}
+
+#Scroll API
+DELETE users
+
+POST users/_doc
+{"name":"user1","age":10}
+
+POST users/_doc
+{"name":"user2","age":11}
+
+
+POST users/_doc
+{"name":"user2","age":12}
+
+POST users/_doc
+{"name":"user2","age":13}
+
+POST users/_count
+
+POST users/_search
+{
+    "size": 1,
+    "query": {
+        "match_all": {}
+    },
+    "sort": [
+        {"age": "desc"} ,
+        {"_id": "asc"}    
+    ]
+}
+
+POST users/_search
+{
+    "size": 1,
+    "query": {
+        "match_all": {}
+    },
+    "search_after":
+        [
+          10,
+          "ZQ0vYGsBrR8X3IP75QqX"],
+    "sort": [
+        {"age": "desc"} ,
+        {"_id": "asc"}    
+    ]
+}
+
+
+#Scroll API
+DELETE users
+POST users/_doc
+{"name":"user1","age":10}
+
+POST users/_doc
+{"name":"user2","age":20}
+
+POST users/_doc
+{"name":"user3","age":30}
+
+POST users/_doc
+{"name":"user4","age":40}
+
+POST /users/_search?scroll=5m
+{
+    "size": 1,
+    "query": {
+        "match_all" : {
+        }
+    }
+}
+
+
+POST users/_doc
+{"name":"user5","age":50}
+POST /_search/scroll
+{
+    "scroll" : "1m",
+    "scroll_id" : "DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAAAWAWbWdoQXR2d3ZUd2kzSThwVTh4bVE0QQ=="
+}
+```
+
+###  处理并发读写操作
+
+```html
+DELETE products
+PUT products
+
+PUT products/_doc/1
+{
+  "title":"iphone",
+  "count":100
+}
+
+
+
+GET products/_doc/1
+
+PUT products/_doc/1?if_seq_no=1&if_primary_term=1
+{
+  "title":"iphone",
+  "count":100
+}
+
+
+
+PUT products/_doc/1?version=30000&version_type=external
+{
+  "title":"iphone",
+  "count":100
+}
 ```
