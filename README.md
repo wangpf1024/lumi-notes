@@ -15,6 +15,7 @@
 3. 深入-API  [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/ELK/Elastic-API-2.md)
 4. 聚合-API  [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/ELK/Elastic-API-3.md)
 5. 对象建模-API   [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/ELK/Elastic-API-4.md)
+6. 集群监控-API   [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/ELK/Elastic-API-5.md)
 
 ## Mysql
 
