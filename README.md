@@ -2,11 +2,10 @@
 
 👋「**探索者都需要清楚三件事：现在的位置，目标，以及通向目标的道路。**」👋
 
-##  NoSql
+##  缓存
 
 1. Redis 集群安装   [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/Redis/Redis%E5%AE%89%E8%A3%85.md)
 2. Redis 集群下的数据迁移  [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/Redis/RedisCluster%E5%A4%A7%E6%B5%B7%E6%8D%9E%E9%92%88%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB.md)
-3. Mongondb 安装  [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/Mongodb/Mongodb%E5%AE%89%E8%A3%85.md)
 
 ##  ELK
 
@@ -16,6 +15,7 @@
 4. 聚合-API  [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/ELK/Elastic-API-3.md)
 5. 对象建模-API   [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/ELK/Elastic-API-4.md)
 6. 集群监控-API   [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/ELK/Elastic-API-5.md)
+7. Mongondb 安装  [Demo](https://github.com/wangpf1024/lumi-notes/blob/main/Mongodb/Mongodb%E5%AE%89%E8%A3%85.md)
 
 ## Mysql
 
