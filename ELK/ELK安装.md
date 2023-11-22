@@ -70,6 +70,56 @@ curl --cacert ./config/certs/http_ca.crt -u elastic https://localhost:9200
 > You do not have permission to access the requested page 。
 > The [kibana_system](https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html) is a built-in role used to connect to Elasticsearch. It's not intended as a login to Kibana. I would login to Kibana using the **elastic** account and then create a new user and then use that one。
 
+### Cerebro
+
+下载地址 ：https://github.com/lmenezes/cerebro
+帮助文档：https://docs.search-guard.com/latest/elasticsearch-cerebro-search-guard
+
+```powershell
+vi conf/application.conf
+```
+
+```json
+\# A list of known hosts
+
+hosts = \[
+
+  #{
+
+  #  host = "http://localhost:9200"
+
+  #  name = "Localhost cluster"
+
+  #  headers-whitelist = \[ "x-proxy-user", "x-proxy-roles", "X-Forwarded-For" \]
+
+  #}
+
+  \# Example of host with authentication
+
+  {
+
+  host = "https://127.0.0.1:9200"
+
+  name = "geektime"
+
+  auth = {
+
+  username = "elastic"
+
+  password = "iHwXTgHDaUmje440Sea6"
+
+  }
+
+  }
+
+\]
+
+   
+
+play.ws.ssl.loose.acceptAnyCertificate=true
+```
+
+
 ###  Logstash
 
 下载地址 ： https://www.elastic.co/downloads/past-releases/logstash-8-7-1
